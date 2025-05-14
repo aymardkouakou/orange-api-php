@@ -22,7 +22,7 @@
         "php": "^8.4",
         "ext-curl": "*",
         "ext-json": "*",
-        "symfony/filesystem": "^5.3",
+        "symfony/filesystem": "^7.2",
         "monolog/monolog": "^2.2",
         "cakephp/cakephp": "5.1.*"
     },
