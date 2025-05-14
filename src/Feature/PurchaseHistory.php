@@ -1,15 +1,15 @@
 <?php
 
-namespace Aymardk\OrangeApiPhp\Feature;
+namespace AymardKouakou\OrangeApiPhp\Feature;
 
-use Aymardk\OrangeApiPhp\Core\Authorization;
-use Aymardk\OrangeApiPhp\Core\Endpoints;
-use Aymardk\OrangeApiPhp\Core\Requests;
-use Aymardk\OrangeApiPhp\Model\Response\PurchaseOrderResponse;
+use AymardKouakou\OrangeApiPhp\Core\Authorization;
+use AymardKouakou\OrangeApiPhp\Core\Endpoints;
+use AymardKouakou\OrangeApiPhp\Core\Requests;
+use AymardKouakou\OrangeApiPhp\Model\Response\PurchaseOrderResponse;
 
 class PurchaseHistory extends OrangeApi
 {
-    public function __construct(Authorization $authorization, string $logPath = null)
+    public function __construct(Authorization $authorization, ?string $logPath = null)
     {
         parent::__construct($authorization, $logPath);
     }

@@ -1,35 +1,22 @@
 <?php
 
-namespace Aymardk\OrangeApiPhp\Model\Data;
+namespace AymardKouakou\OrangeApiPhp\Model\Data;
 
 class OrderExecutionInformation
 {
-    public ?string $date;
-    public ?int $amount;
-    public ?string $currency;
-    public ?string $service;
-    public ?string $country;
-    public ?string $contractId;
+    public ?string $date = null;
+    public ?int $amount = null;
+    public ?string $currency = null;
+    public ?string $service = null;
+    public ?string $country = null;
+    public ?string $contractId = null;
 
     public function __construct(array $args = [])
     {
-        if (array_key_exists('date', $args)) {
-            $this->date = $args['date'];
-        }
-        if (array_key_exists('amount', $args)) {
-            $this->amount = $args['amount'];
-        }
-        if (array_key_exists('currency', $args)) {
-            $this->currency = $args['currency'];
-        }
-        if (array_key_exists('service', $args)) {
-            $this->service = $args['service'];
-        }
-        if (array_key_exists('country', $args)) {
-            $this->country = $args['country'];
-        }
-        if (array_key_exists('contractId', $args)) {
-            $this->contractId = $args['contractId'];
+        foreach (['date', 'amount', 'currency', 'service', 'country', 'contractId'] as $key) {
+            if (array_key_exists($key, $args)) {
+                $this->$key = $args[$key];
+            }
         }
     }
 }

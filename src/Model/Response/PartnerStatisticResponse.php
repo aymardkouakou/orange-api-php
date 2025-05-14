@@ -1,24 +1,24 @@
 <?php
 
-namespace Aymardk\OrangeApiPhp\Model\Response;
+namespace AymardKouakou\OrangeApiPhp\Model\Response;
 
-use Aymardk\OrangeApiPhp\Model\Data\PartnerStatisticData;
-use Aymardk\OrangeApiPhp\Model\Data\Statistic;
+use AymardKouakou\OrangeApiPhp\Model\Data\PartnerStatisticData;
+use AymardKouakou\OrangeApiPhp\Model\Data\Statistic;
 
 class PartnerStatisticResponse
 {
-    public ?PartnerStatisticData $partnerStatistics;
+    public ?PartnerStatisticData $partnerStatistics = null;
 
     public function __construct(array $args = [])
     {
-        if (array_key_exists('partnerStatistics', $args)) {
+        if (!empty($args['partnerStatistics'])) {
+            $data = $args['partnerStatistics'];
             $this->partnerStatistics = new PartnerStatisticData();
 
-            if (array_key_exists('developerId', $args['partnerStatistics'])) {
-                $this->partnerStatistics->developerId = $args['partnerStatistics']['developerId'];
-            }
-            if (array_key_exists('statistics', $args['partnerStatistics'])) {
-                foreach ($args['partnerStatistics']['statistics'] as $statistic) {
+            $this->partnerStatistics->developerId = $data['developerId'] ?? null;
+
+            if (!empty($data['statistics']) && is_array($data['statistics'])) {
+                foreach ($data['statistics'] as $statistic) {
                     $this->partnerStatistics->statistics[] = new Statistic($statistic);
                 }
             }

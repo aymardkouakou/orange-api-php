@@ -1,18 +1,18 @@
 <?php
 
-namespace Aymardk\OrangeApiPhp\Core;
+namespace AymardKouakou\OrangeApiPhp\Core;
 
 use Cake\Http\Client;
 use Symfony\Component\Filesystem\Filesystem;
 
 class Authorization
 {
-    protected ?string $clientSecret = null;
-    protected ?string $accessToken = null;
+    protected string $clientSecret;
+    protected string $accessToken;
     protected ?string $tokenType = null;
     protected ?string $clientId = null;
-    protected ?string $logPathName = 'authorize';
-    protected ?string $logPath;
+    protected string $logPathName = 'authorize';
+    protected string $logPath;
 
     /**
      * Authorization constructor.
@@ -22,10 +22,9 @@ class Authorization
      */
     public function __construct(string $clientId, string $clientSecret, string $logPath = 'tmp')
     {
-        $this->logPath = sprintf("%s/%s/%s", $logPath, $clientId, $this->logPathName);
-
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
+        $this->logPath = sprintf("%s/%s/%s", $logPath, $clientId, $this->logPathName);
     }
 
     public function getClientId(): string
@@ -40,26 +39,29 @@ class Authorization
 
     public function getAccessToken(): string
     {
+        if ($this->accessToken === null) {
+            throw new \RuntimeException('Access token not initialized.');
+        }
         return $this->accessToken;
     }
 
     public function getTokenType(): string
     {
+        if ($this->tokenType === null) {
+            throw new \RuntimeException('Token type not initialized.');
+        }
         return $this->tokenType;
     }
 
     /**
+     * Initialise l'autorisation et récupère le token si besoin.
      * @throws \Exception
      */
     public function init(): bool
     {
-        if ($this->clientId === null || $this->clientSecret === null) {
-            return false;
-        }
-
         $fs = new Filesystem();
 
-        if ($this->hasToken($fs) === false) {
+        if (!$this->hasToken($fs)) {
             $client = new Client();
             $result = $client->post(
                 Endpoints::getAuthentication(),
@@ -70,55 +72,46 @@ class Authorization
                         'username' => $this->clientId,
                         'password' => $this->clientSecret,
                     ]
-                ]);
+                ]
+            );
 
-            if (!$result->isSuccess()) {
-                throw new \RuntimeException($result->getJson()['message']);
+            if (!$result->isSuccess() || !in_array($result->getStatusCode(), [200, 201])) {
+                $json = $result->getJson();
+                $message = $json['message'] ?? 'Authentication failed';
+                throw new \RuntimeException($message);
             }
 
-            if (!in_array($result->getStatusCode(), [200, 201])) {
-                throw new \RuntimeException($result->getJson()['message']);
+            $json = $result->getJson();
+            if (!isset($json['access_token'], $json['token_type'])) {
+                throw new \RuntimeException('access_token or token_type missing in response.');
             }
 
-            if (array_key_exists('access_token', $result->getJson())) {
-                $this->accessToken = $result->getJson()['access_token'];
-            }
+            $this->accessToken = $json['access_token'];
+            $this->tokenType = $json['token_type'];
 
-            if (array_key_exists('token_type', $result->getJson())) {
-                $this->tokenType = $result->getJson()['token_type'];
-            }
-
-            $fs->dumpFile($this->logPath, json_encode($result->getJson()));
+            $fs->dumpFile($this->logPath, json_encode($json));
         }
 
         return true;
     }
 
     /**
-     * @param Filesystem $fs
-     * @return bool
+     * Vérifie la présence d'un token valide dans le cache.
      */
     private function hasToken(Filesystem $fs): bool
     {
         if ($fs->exists($this->logPath)) {
-            $file = new File($this->logPath);
-
-            $iterator = $file->iterate();
-            foreach ($iterator as $line) {
-                if (!empty($line)) {
-                    $json = json_decode(trim($line), true);
-                    if (!array_key_exists('access_token', $json) || !array_key_exists('token_type', $json)) {
-                        throw new \RuntimeException("access_token/token_type not present.");
-                    }
-
-                    $this->accessToken = $json['access_token'];
-                    $this->tokenType = $json['token_type'];
-
-                    return true;
+            $content = file_get_contents($this->logPath);
+            if ($content !== false && !empty($content)) {
+                $json = json_decode($content, true);
+                if (!isset($json['access_token'], $json['token_type'])) {
+                    throw new \RuntimeException("access_token/token_type not present.");
                 }
+                $this->accessToken = $json['access_token'];
+                $this->tokenType = $json['token_type'];
+                return true;
             }
         }
-
         return false;
     }
 }

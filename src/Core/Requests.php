@@ -1,6 +1,6 @@
 <?php
 
-namespace Aymardk\OrangeApiPhp\Core;
+namespace AymardKouakou\OrangeApiPhp\Core;
 
 use Cake\Http\Client;
 use Monolog\Logger;
@@ -23,7 +23,7 @@ class Requests
         string $method,
         string $url,
         array  $data = [],
-        Logger $logger = null
+        ?Logger $logger = null
     ): array
     {
         $client = new Client();

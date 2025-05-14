@@ -1,16 +1,16 @@
 <?php
 
-namespace Aymardk\OrangeApiPhp\Model\Response;
+namespace AymardKouakou\OrangeApiPhp\Model\Response;
 
-use Aymardk\OrangeApiPhp\Model\Data\PartnerContract;
+use AymardKouakou\OrangeApiPhp\Model\Data\PartnerContract;
 
 class PartnerContractResponse
 {
-    public ?PartnerContract $partnerContracts;
+    public ?PartnerContract $partnerContracts = null;
 
     public function __construct(array $args = [])
     {
-        if (array_key_exists('partnerContracts', $args)) {
+        if (!empty($args['partnerContracts'])) {
             $this->partnerContracts = new PartnerContract($args['partnerContracts']);
         }
     }

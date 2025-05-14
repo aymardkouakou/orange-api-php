@@ -1,31 +1,21 @@
 <?php
 
-namespace Aymardk\OrangeApiPhp\Model\Data;
+namespace AymardKouakou\OrangeApiPhp\Model\Data;
 
 class ServiceContract
 {
-    public ?string $country;
-    public ?string $service;
-    public ?int $availableUnits;
-    public ?string $expires;
-    public ?string $scDescription;
+    public ?string $country = null;
+    public ?string $service = null;
+    public ?int $availableUnits = null;
+    public ?string $expires = null;
+    public ?string $scDescription = null;
 
     public function __construct(array $args = [])
     {
-        if (array_key_exists('country', $args)) {
-            $this->country = $args['country'];
-        }
-        if (array_key_exists('service', $args)) {
-            $this->service = $args['service'];
-        }
-        if (array_key_exists('availableUnits', $args)) {
-            $this->availableUnits = $args['availableUnits'];
-        }
-        if (array_key_exists('expires', $args)) {
-            $this->expires = $args['expires'];
-        }
-        if (array_key_exists('scDescription', $args)) {
-            $this->scDescription = $args['scDescription'];
+        foreach (['country', 'service', 'availableUnits', 'expires', 'scDescription'] as $key) {
+            if (array_key_exists($key, $args)) {
+                $this->$key = $args[$key];
+            }
         }
     }
 }

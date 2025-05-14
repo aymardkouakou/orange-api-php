@@ -1,18 +1,18 @@
 <?php
 
-namespace Aymardk\OrangeApiPhp\Model\Data;
+namespace AymardKouakou\OrangeApiPhp\Model\Data;
 
 class PartnerContract
 {
-    public ?string $partnerId;
-    public ?array $contracts = [];
+    public ?string $partnerId = null;
+    /** @var Contract[] */
+    public array $contracts = [];
 
     public function __construct(array $args = [])
     {
-        if (array_key_exists('partnerId', $args)) {
-            $this->partnerId = $args['partnerId'];
-        }
-        if (array_key_exists('contracts', $args)) {
+        $this->partnerId = $args['partnerId'] ?? null;
+
+        if (!empty($args['contracts']) && is_array($args['contracts'])) {
             foreach ($args['contracts'] as $contract) {
                 $this->contracts[] = new Contract($contract);
             }

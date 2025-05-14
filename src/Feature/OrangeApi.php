@@ -1,8 +1,8 @@
 <?php
 
-namespace Aymardk\OrangeApiPhp\Feature;
+namespace AymardKouakou\OrangeApiPhp\Feature;
 
-use Aymardk\OrangeApiPhp\Core\Authorization;
+use AymardKouakou\OrangeApiPhp\Core\Authorization;
 use Monolog\Handler\FirePHPHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -12,7 +12,7 @@ abstract class OrangeApi
     protected ?Logger $logger = null;
     protected ?Authorization $authorization = null;
 
-    public function __construct(Authorization $authorization, string $logPath = null)
+    public function __construct(Authorization $authorization, ?string $logPath = null)
     {
         $this->authorization = $authorization;
 
@@ -46,12 +46,14 @@ abstract class OrangeApi
     {
         $callResponse = $this->query($args);
 
+        // Si le code n'est pas celui attendu et qu'il s'agit d'un problème de token (code 42)
         if (array_key_exists('code', $callResponse) && $callResponse['code'] !== $response_code) {
             if ($callResponse['code'] === 42) {
-                unlink($this->authorization->getLogPath());
+                @unlink($this->authorization->getLogPath());
 
                 if ($this->isAuthorized()) {
-                    $callResponse = $this->attempt($args, $response_code);
+                    // On refait UNE SEULE tentative, sans récursion
+                    $callResponse = $this->query($args);
                 }
             }
         }

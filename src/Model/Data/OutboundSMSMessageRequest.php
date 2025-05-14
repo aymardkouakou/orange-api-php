@@ -1,30 +1,21 @@
 <?php
 
-namespace Aymardk\OrangeApiPhp\Model\Data;
+namespace AymardKouakou\OrangeApiPhp\Model\Data;
 
 class OutboundSMSMessageRequest
 {
-    public ?array $address;
-    public ?string $senderName;
-    public ?string $senderAddress;
-    public ?string $resourceURL;
-    public ?OutboundSMSTextMessage $outboundSMSTextMessage;
+    public ?array $address = null;
+    public ?string $senderName = null;
+    public ?string $senderAddress = null;
+    public ?string $resourceURL = null;
+    public ?OutboundSMSTextMessage $outboundSMSTextMessage = null;
 
     public function __construct(array $args = [])
     {
-        if (array_key_exists('address', $args)) {
-            $this->address = $args['address'];
-        }
-        if (array_key_exists('senderName', $args)) {
-            $this->senderName = $args['senderName'];
-        }
-        if (array_key_exists('resourceURL', $args)) {
-            $this->resourceURL = $args['resourceURL'];
-        }
-
-        // @deprecated
-        if (array_key_exists('senderAddress', $args)) {
-            $this->senderAddress = $args['senderAddress'];
+        foreach (['address', 'senderName', 'senderAddress', 'resourceURL'] as $key) {
+            if (array_key_exists($key, $args)) {
+                $this->$key = $args[$key];
+            }
         }
         if (array_key_exists('outboundSMSTextMessage', $args)) {
             $this->outboundSMSTextMessage = new OutboundSMSTextMessage($args['outboundSMSTextMessage']);

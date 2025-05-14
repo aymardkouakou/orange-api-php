@@ -1,6 +1,6 @@
 <?php
 
-namespace Aymardk\OrangeApiPhp\Core;
+namespace AymardKouakou\OrangeApiPhp\Core;
 
 use NoRewindIterator;
 use SplFileObject;

@@ -1,27 +1,36 @@
 <?php
 
-namespace Aymardk\OrangeApiPhp\Model\Data;
+namespace AymardKouakou\OrangeApiPhp\Model\Data;
 
 class PurchaseOrderData
 {
-    public ?string $id;
-    public ?string $developerId;
-    public ?string $contractId;
-    public ?string $country;
-    public ?string $offerName;
-    public ?string $bundleId;
-    public ?string $bundleDescription;
-    public ?int $price;
-    public ?string $currency;
-    public ?string $purchaseDate;
-    public ?string $paymentMode;
-    public ?string $paymentProviderOrderId;
-    public ?string $payerId;
-    public ?string $type;
-    public ?int $oldAvailableUnits;
-    public ?int $newAvailableUnits;
-    public ?string $oldExpirationDate;
-    public ?string $newExpirationDate;
-    public ?string $externalId;
-    public ?string $comment;
+    public ?string $id = null;
+    public ?string $developerId = null;
+    public ?string $contractId = null;
+    public ?string $country = null;
+    public ?string $offerName = null;
+    public ?string $bundleId = null;
+    public ?string $bundleDescription = null;
+    public ?int $price = null;
+    public ?string $currency = null;
+    public ?string $purchaseDate = null;
+    public ?string $paymentMode = null;
+    public ?string $paymentProviderOrderId = null;
+    public ?string $payerId = null;
+    public ?string $type = null;
+    public ?int $oldAvailableUnits = null;
+    public ?int $newAvailableUnits = null;
+    public ?string $oldExpirationDate = null;
+    public ?string $newExpirationDate = null;
+    public ?string $externalId = null;
+    public ?string $comment = null;
+
+    public function __construct(array $args = [])
+    {
+        foreach ($args as $key => $value) {
+            if (property_exists($this, $key)) {
+                $this->$key = $value;
+            }
+        }
+    }
 }

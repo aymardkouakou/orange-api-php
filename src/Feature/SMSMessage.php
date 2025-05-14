@@ -1,11 +1,11 @@
 <?php
 
-namespace Aymardk\OrangeApiPhp\Feature;
+namespace AymardKouakou\OrangeApiPhp\Feature;
 
-use Aymardk\OrangeApiPhp\Core\Authorization;
-use Aymardk\OrangeApiPhp\Core\Endpoints;
-use Aymardk\OrangeApiPhp\Core\Requests;
-use Aymardk\OrangeApiPhp\Model\Response\SMSMessageResponse;
+use AymardKouakou\OrangeApiPhp\Core\Authorization;
+use AymardKouakou\OrangeApiPhp\Core\Endpoints;
+use AymardKouakou\OrangeApiPhp\Core\Requests;
+use AymardKouakou\OrangeApiPhp\Model\Response\SMSMessageResponse;
 
 class SMSMessage extends OrangeApi
 {
@@ -15,17 +15,21 @@ class SMSMessage extends OrangeApi
 
     private array $request = [];
 
-    public function __construct(Authorization $authorization, string $logPath = null)
+    public function __construct(Authorization $authorization, ?string $logPath = null)
     {
         parent::__construct($authorization, $logPath);
     }
 
     /**
+     * Prépare et exécute la requête d'envoi de SMS.
+     * 
+     * @param array $args
+     * @return array
      * @throws \Exception
      */
     protected function query(array $args): array
     {
-        $this->request += [
+        $this->request = [
             'senderAddress' => "tel:+$this->senderAddress",
             'address' => "tel:+$this->address",
             'outboundSMSTextMessage' => [
@@ -34,7 +38,7 @@ class SMSMessage extends OrangeApi
         ];
 
         if ($this->senderName !== null) {
-            $this->request += ['senderName' => $this->senderName];
+            $this->request['senderName'] = $this->senderName;
         }
 
         $data = [
@@ -52,19 +56,19 @@ class SMSMessage extends OrangeApi
         );
     }
 
-    public function withAddress(string $address): SMSMessage
+    public function withAddress(string $address): self
     {
         $this->address = $address;
         return $this;
     }
 
-    public function withSenderAddress(string $senderAddress): SMSMessage
+    public function withSenderAddress(string $senderAddress): self
     {
         $this->senderAddress = $senderAddress;
         return $this;
     }
 
-    public function withSenderName(string $senderName): SMSMessage
+    public function withSenderName(string $senderName): self
     {
         $this->senderName = $senderName;
         return $this;
@@ -81,9 +85,7 @@ class SMSMessage extends OrangeApi
             throw new \RuntimeException('address and senderAddress must be provided.');
         }
 
-        return
-            new SMSMessageResponse(
-                $this->attempt(['message' => $message], 201)['response']
-            );
+        $result = $this->attempt(['message' => $message], 201);
+        return new SMSMessageResponse($result['response'] ?? []);
     }
 }

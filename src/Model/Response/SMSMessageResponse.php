@@ -1,16 +1,16 @@
 <?php
 
-namespace Aymardk\OrangeApiPhp\Model\Response;
+namespace AymardKouakou\OrangeApiPhp\Model\Response;
 
-use Aymardk\OrangeApiPhp\Model\Data\OutboundSMSMessageRequest;
+use AymardKouakou\OrangeApiPhp\Model\Data\OutboundSMSMessageRequest;
 
 class SMSMessageResponse
 {
-    public ?OutboundSMSMessageRequest $outboundSMSMessageRequest;
+    public ?OutboundSMSMessageRequest $outboundSMSMessageRequest = null;
 
     public function __construct(array $args = [])
     {
-        if (array_key_exists('outboundSMSMessageRequest', $args)) {
+        if (!empty($args['outboundSMSMessageRequest'])) {
             $this->outboundSMSMessageRequest = new OutboundSMSMessageRequest($args['outboundSMSMessageRequest']);
         }
     }

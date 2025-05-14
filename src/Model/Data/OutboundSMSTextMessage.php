@@ -1,10 +1,10 @@
 <?php
 
-namespace Aymardk\OrangeApiPhp\Model\Data;
+namespace AymardKouakou\OrangeApiPhp\Model\Data;
 
 class OutboundSMSTextMessage
 {
-    public ?string $message;
+    public ?string $message = null;
 
     public function __construct(array $args = [])
     {

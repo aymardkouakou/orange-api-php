@@ -1,19 +1,18 @@
 <?php
 
-namespace Aymardk\OrangeApiPhp\Model\Data;
+namespace AymardKouakou\OrangeApiPhp\Model\Data;
 
 class OrderInput
 {
-    public ?string $type;
-    public ?string $value;
+    public ?string $type = null;
+    public ?string $value = null;
 
     public function __construct(array $args = [])
     {
-        if (array_key_exists('type', $args)) {
-            $this->type = $args['type'];
-        }
-        if (array_key_exists('value', $args)) {
-            $this->value = $args['value'];
+        foreach (['type', 'value'] as $key) {
+            if (array_key_exists($key, $args)) {
+                $this->$key = $args[$key];
+            }
         }
     }
 }
