@@ -18,12 +18,26 @@ use PHPUnit\Framework\TestCase;
 
 class OrangeApiTest extends TestCase
 {
-    protected string $appId = ''; // TODO: Add correct appId
-    protected string $clientId = ''; // TODO: Add correct clientId
-    protected string $clientSecret = ''; // TODO: Add correct clientSecret
-    protected string $senderAddress = '2250000'; // TODO: Add correct senderAdress
-    protected string $messageLogPath = 'log';
-    protected string $logPath = 'tmp';
+    protected string $appId;
+    protected string $clientId;
+    protected string $clientSecret;
+    protected string $senderAddress;
+    protected string $messageLogPath;
+    protected string $logPath;
+
+    public function setUp(): void
+    {
+        // Charge les variables d'environnement depuis .env
+        $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+        $dotenv->load();
+
+        $this->appId = $_ENV['APP_ID'] ?? '';
+        $this->clientId = $_ENV['CLIENT_ID'] ?? '';
+        $this->clientSecret = $_ENV['CLIENT_SECRET'] ?? '';
+        $this->senderAddress = $_ENV['SENDER_ADDRESS'] ?? '';
+        $this->messageLogPath = $_ENV['MESSAGE_LOG_PATH'] ?? 'log';
+        $this->logPath = $_ENV['LOG_PATH'] ?? 'tmp';
+    }
 
     /**
      * @return Authorization
@@ -86,7 +100,7 @@ class OrangeApiTest extends TestCase
             'L\'autorisation a échoué, impossible de tester l\'envoi de SMS.'
         );
 
-        $addresses = ['']; // TODO: Ajouter des numéros valides pour le test
+        $addresses = ['2250709474609']; // TODO: Ajouter des numéros valides pour le test
 
         foreach ($addresses as $address) {
             $response = $message

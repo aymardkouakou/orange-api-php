@@ -86,6 +86,6 @@ class SMSMessage extends OrangeApi
         }
 
         $result = $this->attempt(['message' => $message], 201);
-        return new SMSMessageResponse($result['response'] ?? []);
+        return new SMSMessageResponse($result ?? []);
     }
 }
