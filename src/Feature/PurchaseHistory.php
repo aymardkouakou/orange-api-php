@@ -38,7 +38,7 @@ class PurchaseHistory extends OrangeApi
      * @return PurchaseOrderResponse
      * @throws \Exception
      */
-    public function check(string $country_code = null): PurchaseOrderResponse
+    public function check(?string $country_code = null): PurchaseOrderResponse
     {
         return
             new PurchaseOrderResponse(

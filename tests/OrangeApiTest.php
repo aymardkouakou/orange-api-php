@@ -100,7 +100,7 @@ class OrangeApiTest extends TestCase
             'L\'autorisation a échoué, impossible de tester l\'envoi de SMS.'
         );
 
-        $addresses = ['2250709474609']; // TODO: Ajouter des numéros valides pour le test
+        $addresses = [$_ENV['TEST_ADDRESS_1'], $_ENV['TEST_ADDRESS_2']];
 
         foreach ($addresses as $address) {
             $response = $message
