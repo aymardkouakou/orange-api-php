@@ -140,16 +140,14 @@ class OrangeApiTest extends TestCase
             "La réponse n'est pas une instance de BalanceResponse"
         );
 
-        $balanceData = $response->balance;
-
         $this->assertInstanceOf(
             BalanceData::class,
-            $balanceData,
+            $response->balance,
             "La donnée balance n'est pas une instance de BalanceData"
         );
 
-        $this->assertIsString($balanceData->status, "Le status de la balance doit être une chaîne");
-        $this->assertIsInt($balanceData->availableUnits, "availableUnits doit être un entier");
+        $this->assertNotEmpty($response->balance->id, "Le ID de la balance ne doit pas être une chaîne vide");
+        $this->assertNotEmpty($response->balance->type, "Le TYPE de la balance ne doit pas être une chaîne vide");
     }
 
     public function testStatistics(): void
@@ -174,15 +172,13 @@ class OrangeApiTest extends TestCase
             "La réponse n'est pas une instance de PartnerStatisticResponse"
         );
 
-        $partnerStatistics = $response->partnerStatistics;
-
         $this->assertInstanceOf(
             PartnerStatisticData::class,
-            $partnerStatistics,
+            $response->partnerStatistics,
             "Les données partnerStatistics ne sont pas une instance de PartnerStatisticData"
         );
 
-        $this->assertIsString($partnerStatistics->developerId, "developerId doit être une chaîne");
+        $this->assertIsString($response->partnerStatistics->developerId, "developerId doit être une chaîne");
     }
 
     public function testPurchaseOrders(): void

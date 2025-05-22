@@ -33,13 +33,15 @@ class Requests
             ['headers' => $headers, 'type' => 'json']
         );
 
+        $json = $result->getJson();
+
         if ($logger !== null) {
             $logger->log(
                 (in_array($result->getStatusCode(), [200, 201]) ? Logger::DEBUG : Logger::ERROR),
-                json_encode($result->getJson())
+                json_encode($json)
             );
         }
 
-        return $result->getJson();
+        return $json;
     }
 }

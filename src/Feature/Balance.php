@@ -21,7 +21,7 @@ class Balance extends OrangeApi
     {
         $data = [];
         if (array_key_exists('country_code', $args)) {
-            $data += ['country' => $args['country_code']];
+            $data['country'] = $args['country_code'];
         }
 
         return Requests::call(
@@ -40,9 +40,7 @@ class Balance extends OrangeApi
      */
     public function check(?string $country_code = null): BalanceResponse
     {
-        return
-            new BalanceResponse(
-                $this->attempt(['country_code' => $country_code], 200)
-            );
+        $result = $this->attempt(['country_code' => $country_code], 200);
+        return new BalanceResponse($result[0]);
     }
 }
